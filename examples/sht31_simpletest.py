@@ -9,5 +9,5 @@ sensor = adafruit_sht31.SHT31(i2c)
 
 
 while True:
-    print(sensor.get_temperature_humidity)
+    print(sensor.temperature_and_relative_humidity)
     time.sleep(2)

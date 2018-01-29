@@ -104,21 +104,21 @@ class SHT31:
 
 
     @property
-    def get_temperature_humidity(self):
+    def temperature_and_relative_humidity(self):
         """The measured temperature and relative humidity in percent."""
         raw_temperature,raw_humidity = self._data()
         return (-45 + (175 * (raw_temperature/65535)),100*(raw_humidity/65523))
 
 
     @property
-    def get_temperature(self):
+    def temperature(self):
         """The measured relative humidity in percent."""
         raw_temperature,raw_humidity = self._data()
         return (-45 + (175 * (raw_temperature/65535)))
 
 
     @property
-    def get_humidity(self):
+    def relative_humidity(self):
         """The measured relative humidity in percent."""
         raw_temperature,raw_humidity = self._data()
         return (100*(raw_humidity/65523))
@@ -130,25 +130,25 @@ class SHT31:
         time.sleep(.010)
 
 
-    def set_heater(self,heater=False):
+    def heater(self,heater=False):
         if(heater):
             self._command(SHT31_HEATEREN)
         else:
             self._command(SHT31_HEATERDIS)
-        if(self.get_status&0x2000):
+        if(self.status&0x2000):
 		return True
 	else:
 		return False
 
     @property
-    def get_heater_status(self):
-        if(self.get_status&0x2000):
+    def heater_status(self):
+        if(self.status&0x2000):
 		return True
 	else:
 		return False
 
     @property
-    def get_status(self):
+    def status(self):
         data = bytearray(2)
         self._command(SHT31_READSTATUS)
         try:
