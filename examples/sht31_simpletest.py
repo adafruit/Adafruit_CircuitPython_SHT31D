@@ -7,7 +7,19 @@ import adafruit_sht31
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_sht31.SHT31(i2c)
 
-
+loopcount=0
 while True:
-    print(sensor.temperature_and_relative_humidity)
+    print("\nTemperature: %0.1f C" % sensor.temperature)
+    print("Humidity: %0.1f %%" % sensor.relative_humidity)
+    loopcount+=1
     time.sleep(2)
+    # every 10 passes turn on the heater for 1 second
+    if(loopcount==10):
+        loopcount=0
+        sensor.heater=True
+        print("Sensor Heater status = ",sensor.heater)
+        time.sleep(1)
+        sensor.heater=False
+        print("Sensor Heater status = ",sensor.heater)
+
+

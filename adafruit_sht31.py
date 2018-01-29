@@ -100,24 +100,17 @@ class SHT31:
         return temperature, humidity
 
     @property
-    def temperature_and_relative_humidity(self):
-        """The measured temperature and relative humidity in percent."""
-        raw_temperature, raw_humidity = self._data()
-        return (-45 + (175 * (raw_temperature/65535)), 100*(raw_humidity/65523))
-
-    @property
     def temperature(self):
         """The measured relative humidity in percent."""
-        temperature, relative_humidity = self.temperature_and_relative_humidity
-        return temperature
+        raw_temperature, raw_humidity = self._data()
+        return (-45 + (175 * (raw_temperature/65535)))
 
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
-        temperature, relative_humidity = self.temperature_and_relative_humidity
-        return relative_humidity
+        raw_temperature, raw_humidity = self._data()
+        return (100*(raw_humidity/65523))
 
-    @property
     def reset(self):
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
