@@ -13,17 +13,17 @@ while True:
     print(sensor.temperature)
     print(sensor.relative_humidity)
     print(sensor.status)
-    print(sensor.heater_status)
-    print(sensor.heater(heater=True))
-    print(sensor.heater_status)
+    print(sensor.heater)
+    sensor.heater=True
+    print(sensor.heater)
     print(sensor.status)
-    print(sensor.heater(heater=False))
+    sensor.heater=False
     print(sensor.status)
-    print(sensor.heater(heater=True))
-    print(sensor.heater_status)
+    sensor.heater=True
+    print(sensor.heater)
     print(sensor.status)
     sensor.reset
     print(sensor.status)
-    print(sensor.heater_status)
+    print(sensor.heater)
     print(sensor.temperature_and_relative_humidity)
     time.sleep(2)

@@ -108,36 +108,34 @@ class SHT31:
     @property
     def temperature(self):
         """The measured relative humidity in percent."""
-        raw_temperature, raw_humidity = self._data()
-        return (-45 + (175 * (raw_temperature/65535)))
+        temperature, relative_humidity = self.temperature_and_relative_humidity
+        return temperature
 
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
-        raw_temperature, raw_humidity = self._data()
-        return (100*(raw_humidity/65523))
+        temperature, relative_humidity = self.temperature_and_relative_humidity
+        return relative_humidity
 
     @property
     def reset(self):
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
 
-    def heater(self, heater=False):
-        if(heater):
-            self._command(SHT31_HEATEREN)
-        else:
-            self._command(SHT31_HEATERDIS)
+    @property
+    def heater(self):
         if(self.status & 0x2000):
             return True
         else:
             return False
 
-    @property
-    def heater_status(self):
-        if(self.status & 0x2000):
-            return True
+    @heater.setter
+    def heater(self, value=False):
+        if(value):
+            self._command(SHT31_HEATEREN)
         else:
-            return False
+            self._command(SHT31_HEATERDIS)
+
 
     @property
     def status(self):
