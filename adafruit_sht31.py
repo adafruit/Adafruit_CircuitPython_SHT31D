@@ -42,21 +42,18 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_sht31.git"
 
 
-SHT31_DEFAULT_ADDR    =const(0x44)
-SHT31_MEAS_HIGHREP_STRETCH =const(0x2C06)
-SHT31_MEAS_MEDREP_STRETCH  =const(0x2C0D)
-SHT31_MEAS_LOWREP_STRETCH  =const(0x2C10)
-SHT31_MEAS_HIGHREP         =const(0x2400)
-SHT31_MEAS_MEDREP          =const(0x240B)
-SHT31_MEAS_LOWREP          =const(0x2416)
-SHT31_READSTATUS           =const(0xF32D)
-SHT31_CLEARSTATUS          =const(0x3041)
-SHT31_SOFTRESET            =const(0x30A2)
-SHT31_HEATEREN             =const(0x306D)
-SHT31_HEATERDIS            =const(0x3066)
-
-
-
+SHT31_DEFAULT_ADDR = const(0x44)
+SHT31_MEAS_HIGHREP_STRETCH = const(0x2C06)
+SHT31_MEAS_MEDREP_STRETCH = const(0x2C0D)
+SHT31_MEAS_LOWREP_STRETCH = const(0x2C10)
+SHT31_MEAS_HIGHREP = const(0x2400)
+SHT31_MEAS_MEDREP = const(0x240B)
+SHT31_MEAS_LOWREP = const(0x2416)
+SHT31_READSTATUS = const(0xF32D)
+SHT31_CLEARSTATUS = const(0x3041)
+SHT31_SOFTRESET = const(0x30A2)
+SHT31_HEATEREN = const(0x306D)
+SHT31_HEATERDIS = const(0x3066)
 
 def _crc(data):
     crc = 0xff
@@ -93,59 +90,54 @@ class SHT31:
             with self.i2c_device as i2c:
                 i2c.readinto(data)
         except OSError as error:
-            if error.args[0] not in ('I2C bus error', 19): # errno 19 ENODEV
+            if error.args[0] not in ('I2C bus error', 19):  # errno 19 ENODEV
                 raise
-        temperature, tcheck,humidity,hcheck = struct.unpack('>HBHB', data)
+        temperature, tcheck, humidity, hcheck = struct.unpack('>HBHB', data)
         if tcheck != _crc(data[:2]):
             raise ValueError("temperature CRC mismatch")
         if hcheck != _crc(data[3:5]):
             raise ValueError("humidity CRC mismatch")
-        return temperature,humidity
-
+        return temperature, humidity
 
     @property
     def temperature_and_relative_humidity(self):
         """The measured temperature and relative humidity in percent."""
-        raw_temperature,raw_humidity = self._data()
-        return (-45 + (175 * (raw_temperature/65535)),100*(raw_humidity/65523))
-
+        raw_temperature, raw_humidity = self._data()
+        return (-45 + (175 * (raw_temperature/65535)), 100*(raw_humidity/65523))
 
     @property
     def temperature(self):
         """The measured relative humidity in percent."""
-        raw_temperature,raw_humidity = self._data()
+        raw_temperature, raw_humidity = self._data()
         return (-45 + (175 * (raw_temperature/65535)))
-
 
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
-        raw_temperature,raw_humidity = self._data()
+        raw_temperature, raw_humidity = self._data()
         return (100*(raw_humidity/65523))
-
 
     @property
     def reset(self):
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
 
-
-    def heater(self,heater=False):
+    def heater(self, heater=False):
         if(heater):
             self._command(SHT31_HEATEREN)
         else:
             self._command(SHT31_HEATERDIS)
-        if(self.status&0x2000):
-		return True
-	else:
-		return False
+        if(self.status & 0x2000):
+            return True
+        else:
+            return False
 
     @property
     def heater_status(self):
-        if(self.status&0x2000):
-		return True
-	else:
-		return False
+        if(self.status & 0x2000):
+            return True
+        else:
+            return False
 
     @property
     def status(self):
@@ -155,7 +147,7 @@ class SHT31:
             with self.i2c_device as i2c:
                 i2c.readinto(data)
         except OSError as error:
-            if error.args[0] not in ('I2C bus error', 19): # errno 19 ENODEV
+            if error.args[0] not in ('I2C bus error', 19):   # errno 19 ENODEV
                 raise
-        status = data[0]<<8 | data[1]
+        status = data[0] << 8 | data[1]
         return status
