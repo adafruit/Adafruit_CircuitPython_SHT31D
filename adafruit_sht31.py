@@ -120,12 +120,14 @@ class SHT31:
 
 
     def reset(self):
+        """Execute a Soft RESET of the sensor."""
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
 
 
     @property
     def heater(self):
+        """Control the sensor internal heater."""
         return bool(self.status & 0x2000)
 
     @heater.setter
@@ -138,6 +140,7 @@ class SHT31:
 
     @property
     def status(self):
+        """Read the sensor status."""
         data = bytearray(2)
         self._command(SHT31_READSTATUS)
         try:
