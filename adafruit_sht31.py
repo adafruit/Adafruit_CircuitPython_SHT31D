@@ -73,18 +73,14 @@ class SHT31:
     """
     A driver for the SHT31-D temperature and humidity sensor.
     """
-
-
     def __init__(self, i2c_bus, address=SHT31_DEFAULT_ADDR):
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
 
-
     def _command(self, command):
         with self.i2c_device as i2c:
             i2c.write(struct.pack('>H', command))
-
 
     def _data(self):
         data = bytearray(6)
@@ -104,26 +100,22 @@ class SHT31:
             raise ValueError("humidity CRC mismatch")
         return temperature, humidity
 
-
     @property
     def temperature(self):
         """The measured relative humidity in percent."""
-        raw_temperature, raw_humidity = self._data()
+        raw_temperature,  _ = self._data()
         return -45 + (175 * (raw_temperature/65535))
-
 
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
-        raw_temperature, raw_humidity = self._data()
+        _, raw_humidity = self._data()
         return 100*(raw_humidity/65523)
-
 
     def reset(self):
         """Execute a Soft RESET of the sensor."""
         self._command(SHT31_SOFTRESET)
         time.sleep(.010)
-
 
     @property
     def heater(self):
@@ -136,7 +128,6 @@ class SHT31:
             self._command(SHT31_HEATEREN)
         else:
             self._command(SHT31_HEATERDIS)
-
 
     @property
     def status(self):

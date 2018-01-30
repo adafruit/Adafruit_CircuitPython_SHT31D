@@ -16,10 +16,10 @@ while True:
     # every 10 passes turn on the heater for 1 second
     if loopcount == 10:
         loopcount = 0
-        sensor.heater=True
-        print("Sensor Heater status = ",sensor.heater)
+        sensor.heater = True
+        print("Sensor Heater status =", sensor.heater)
         time.sleep(1)
-        sensor.heater=False
-        print("Sensor Heater status = ",sensor.heater)
+        sensor.heater = False
+        print("Sensor Heater status =", sensor.heater)
 
 
