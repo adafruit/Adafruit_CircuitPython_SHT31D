@@ -90,27 +90,26 @@ class SHT31:
         try:
             with self.i2c_device as i2c:
                 i2c.readinto(data)
-        except OSError as error:
-            if error.args[0] not in ('I2C bus error', 19):  # errno 19 ENODEV
+        except OSError:
                 raise
         temperature, tcheck, humidity, hcheck = struct.unpack('>HBHB', data)
         if tcheck != _crc(data[:2]):
-            raise ValueError("temperature CRC mismatch")
+            raise RuntimeError("temperature CRC mismatch")
         if hcheck != _crc(data[3:5]):
-            raise ValueError("humidity CRC mismatch")
+            raise RuntimeError("humidity CRC mismatch")
         return temperature, humidity
 
     @property
     def temperature(self):
         """The measured relative humidity in percent."""
-        raw_temperature,  _ = self._data()
-        return -45 + (175 * (raw_temperature/65535))
+        raw_temperature, _ = self._data()
+        return -45 + (175 * (raw_temperature / 65535))
 
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
         _, raw_humidity = self._data()
-        return 100*(raw_humidity/65523)
+        return 100*(raw_humidity / 65523)
 
     def reset(self):
         """Execute a Soft RESET of the sensor."""
@@ -120,7 +119,7 @@ class SHT31:
     @property
     def heater(self):
         """Control the sensor internal heater."""
-        return bool(self.status & 0x2000)
+        return (self.status & 0x2000)!=0
 
     @heater.setter
     def heater(self, value=False):
@@ -131,7 +130,7 @@ class SHT31:
 
     @property
     def status(self):
-        """Read the sensor status."""
+        """Return the Sensor status."""
         data = bytearray(2)
         self._command(SHT31_READSTATUS)
         try:
