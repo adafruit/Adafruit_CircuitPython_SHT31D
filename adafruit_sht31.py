@@ -109,7 +109,7 @@ class SHT31:
     def relative_humidity(self):
         """The measured relative humidity in percent."""
         _, raw_humidity = self._data()
-        return 100*(raw_humidity / 65523)
+        return 100 * (raw_humidity / 65523)
 
     def reset(self):
         """Execute a Soft RESET of the sensor."""
