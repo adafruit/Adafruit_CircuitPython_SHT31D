@@ -127,7 +127,7 @@ class SHT31:
 
     @property
     def status(self):
-        """Return the Sensor status."""
+        """The Sensor status."""
         data = bytearray(2)
         self._command(SHT31_READSTATUS)
         with self.i2c_device as i2c:
