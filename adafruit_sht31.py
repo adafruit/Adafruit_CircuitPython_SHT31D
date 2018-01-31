@@ -119,7 +119,7 @@ class SHT31:
     @property
     def heater(self):
         """Control the sensor internal heater."""
-        return (self.status & 0x2000)!=0
+        return (self.status & 0x2000) != 0
 
     @heater.setter
     def heater(self, value=False):

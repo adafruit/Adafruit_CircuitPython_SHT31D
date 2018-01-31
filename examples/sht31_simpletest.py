@@ -22,4 +22,3 @@ while True:
         sensor.heater = False
         print("Sensor Heater status =", sensor.heater)
 
-
