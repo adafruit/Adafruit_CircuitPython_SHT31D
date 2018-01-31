@@ -21,4 +21,3 @@ while True:
         time.sleep(1)
         sensor.heater = False
         print("Sensor Heater status =", sensor.heater)
-

@@ -87,11 +87,8 @@ class SHT31:
         data[0] = 0xff
         self._command(SHT31_MEAS_HIGHREP)
         time.sleep(.5)
-        try:
-            with self.i2c_device as i2c:
-                i2c.readinto(data)
-        except OSError:
-                raise
+        with self.i2c_device as i2c:
+            i2c.readinto(data)
         temperature, tcheck, humidity, hcheck = struct.unpack('>HBHB', data)
         if tcheck != _crc(data[:2]):
             raise RuntimeError("temperature CRC mismatch")
@@ -133,11 +130,7 @@ class SHT31:
         """Return the Sensor status."""
         data = bytearray(2)
         self._command(SHT31_READSTATUS)
-        try:
-            with self.i2c_device as i2c:
-                i2c.readinto(data)
-        except OSError as error:
-            if error.args[0] not in ('I2C bus error', 19):   # errno 19 ENODEV
-                raise
+        with self.i2c_device as i2c:
+            i2c.readinto(data)
         status = data[0] << 8 | data[1]
         return status
