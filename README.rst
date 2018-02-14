@@ -2,8 +2,8 @@
 Introduction
 ============
 
-.. image:: https://readthedocs.org/projects/adafruit-circuitpython-sht31/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/sht31/en/latest/
+.. image:: https://readthedocs.org/projects/adafruit-circuitpython-sht31d/badge/?version=latest
+    :target: https://circuitpython.readthedocs.io/projects/sht31d/en/latest/
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
