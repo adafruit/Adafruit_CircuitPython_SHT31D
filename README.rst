@@ -3,16 +3,14 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-sht31/badge/?version=latest
-
     :target: https://circuitpython.readthedocs.io/projects/sht31/en/latest/
-
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-TODO
+CircuitPython module for the SHT31-D temperature and humidity sensor.
 
 Dependencies
 =============
