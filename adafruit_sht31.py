@@ -25,6 +25,21 @@
 
 This is a CircuitPython driver for the SHT31-D temperature and humidity sensor.
 
+* Author(s): Jerry Needell
+
+Implementation Notes
+--------------------
+
+**Hardware:**
+
+* Adafruit `Sensiron SHT31-D Temperature & Humidity Sensor Breakout
+  <https://www.adafruit.com/product/2857>`_ (Product ID: 2857)
+
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
+  https://github.com/adafruit/circuitpython/releases
+* Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
 # imports
@@ -72,6 +87,9 @@ def _crc(data):
 class SHT31:
     """
     A driver for the SHT31-D temperature and humidity sensor.
+
+    :param i2c_bus: The `busio.I2C` object to use. This is the only required parameter.
+    :param int address: (optional) The I2C address of the device.
     """
     def __init__(self, i2c_bus, address=SHT31_DEFAULT_ADDR):
         self.i2c_device = I2CDevice(i2c_bus, address)
