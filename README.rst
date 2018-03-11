@@ -10,6 +10,10 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
+.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_SHT31D.svg?branch=master
+    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_SHT31D
+    :alt: Build Status
+
 CircuitPython module for the SHT31-D temperature and humidity sensor.
 
 Dependencies
