@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`adafruit_sht31`
+`adafruit_sht31d`
 ====================================================
 
 This is a CircuitPython driver for the SHT31-D temperature and humidity sensor.
@@ -50,11 +50,11 @@ except ImportError:
 
 import time
 
-from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
+from adafruit_bus_device.i2c_device import I2CDevice
 
 __version__ = "0.0.0-auto.0"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_sht31.git"
+__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_SHT31D.git"
 
 
 SHT31_DEFAULT_ADDR = const(0x44)
@@ -84,7 +84,7 @@ def _crc(data):
     return crc
 
 
-class SHT31:
+class SHT31D:
     """
     A driver for the SHT31-D temperature and humidity sensor.
 

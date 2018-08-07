@@ -1,11 +1,11 @@
 import time
 import board
 import busio
-import adafruit_sht31
+import adafruit_sht31d
 
 # Create library object using our Bus I2C port
 i2c = busio.I2C(board.SCL, board.SDA)
-sensor = adafruit_sht31.SHT31(i2c)
+sensor = adafruit_sht31d.SHT31D(i2c)
 
 loopcount = 0
 while True:
