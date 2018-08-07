@@ -34,7 +34,7 @@ You must import the library to use it:
 
 .. code:: python
 
-    import adafruit_sht31
+    import adafruit_sht31d
 
 This driver takes an instantiated and active I2C object (from the `busio` or
 the `bitbangio` library) as an argument to its constructor.  The way to create
@@ -53,7 +53,7 @@ the sensor object:
 
 .. code:: python
 
-    sensor = adafruit_sht31.SHT31(i2c)
+    sensor = adafruit_sht31d.SHT31D(i2c)
 
 
 And then you can start measuring the temperature and humidity:
@@ -67,7 +67,7 @@ Contributing
 ============
 
 Contributions are welcome! Please read our `Code of Conduct
-<https://github.com/adafruit/Adafruit_CircuitPython_sht31/blob/master/CODE_OF_CONDUCT.md>`_
+<https://github.com/adafruit/Adafruit_CircuitPython_SHT31D/blob/master/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
 
 Building locally
@@ -92,7 +92,7 @@ Then run the build:
 
 .. code-block:: shell
 
-    circuitpython-build-bundles --filename_prefix adafruit-circuitpython-sht31 --library_location .
+    circuitpython-build-bundles --filename_prefix adafruit-circuitpython-sht31d --library_location .
 
 Sphinx documentation
 -----------------------

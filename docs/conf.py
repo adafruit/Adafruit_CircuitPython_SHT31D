@@ -31,7 +31,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Adafruit sht31 Library'
+project = u'Adafruit SHT31D Library'
 copyright = u'2017 Jerry Needell'
 author = u'Jerry Needell'
 
