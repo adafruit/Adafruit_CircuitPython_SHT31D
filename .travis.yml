@@ -25,9 +25,9 @@ install:
 - pip install pylint circuitpython-build-tools Sphinx sphinx-rtd-theme
 - pip install --force-reinstall pylint==1.9.2
 script:
-- pylint adafruit_sht31.py
+- pylint adafruit_sht31d.py
 - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name,bad-whitespace
   examples/*.py)
-- circuitpython-build-bundles --filename_prefix adafruit-circuitpython-sht31 --library_location
+- circuitpython-build-bundles --filename_prefix adafruit-circuitpython-sht31d --library_location
   .
 - cd docs && sphinx-build -E -W -b html . _build/html && cd ..
