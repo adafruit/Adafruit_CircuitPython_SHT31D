@@ -107,16 +107,16 @@ class SHT31D:
         time.sleep(.5)
         with self.i2c_device as i2c:
             i2c.readinto(data)
-        temperature, tcheck, humidity, hcheck = struct.unpack('>HBHB', data)
+        raw_temperature, tcheck, raw_humidity, hcheck = struct.unpack('>HBHB', data)
         if tcheck != _crc(data[:2]):
-            raise RuntimeError("temperature CRC mismatch")
+            raise RuntimeError("raw_temperature CRC mismatch")
         if hcheck != _crc(data[3:5]):
-            raise RuntimeError("humidity CRC mismatch")
-        return temperature, humidity
+            raise RuntimeError("raw_humidity CRC mismatch")
+        return raw_temperature, raw_humidity
 
     @property
     def temperature(self):
-        """The measured relative humidity in percent."""
+        """The measured temperature in percent."""
         raw_temperature, _ = self._data()
         return -45 + (175 * (raw_temperature / 65535))
 
@@ -125,6 +125,15 @@ class SHT31D:
         """The measured relative humidity in percent."""
         _, raw_humidity = self._data()
         return 100 * (raw_humidity / 65523)
+		
+	@property
+    def temperature_and_relative_humidity(self):
+        """The measured relative humidity in percent."""
+        raw_temperature, raw_humidity = self._data()
+		temperature =  -45 + (175 * (raw_temperature / 65535))
+		humidity = 100 * (raw_humidity / 65523)
+        return temperature, humidity
+	
 
     def reset(self):
         """Execute a Soft RESET of the sensor."""
