@@ -116,7 +116,7 @@ class SHT31D:
 
     @property
     def temperature(self):
-        """The measured relative humidity in percent."""
+        """The measured temperature in degrees celsius."""
         raw_temperature, _ = self._data()
         return -45 + (175 * (raw_temperature / 65535))
 
