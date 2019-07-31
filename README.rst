@@ -63,6 +63,38 @@ And then you can start measuring the temperature and humidity:
     print(sensor.temperature)
     print(sensor.relative_humidity)
 
+You can instruct the sensor to periodically measure the temperature and
+humidity, storing the result in its internal cache:
+
+.. code:: python
+
+    sensor.mode = adafruit_sht31d.MODE_PERIODIC
+
+You can adjust the frequency at which the sensor periodically gathers data to:
+0.5, 1, 2, 4 or 10 Hz. The following adjusts the frequency to 2 Hz:
+
+.. code:: python
+
+    sensor.frequency = adafruit_sht31d.FREQUENCY_2
+
+The sensor is capable of storing eight results. The sensor stores these
+results in an internal FILO cache. Retrieving these results is simlilar to
+taking a measurement. The sensor clears its cache once the stored data is read.
+The sensor always returns eight data points. The list of results is backfilled
+with the maximum output values of 130.0 ºC and 100.01831417975366 % RH:
+
+.. code:: python
+
+    print(sensor.temperature)
+    print(sensor.relative_humidity)
+
+The sensor will continue to collect data at the set interval until it is
+returned to single shot data acquisition mode:
+
+.. code:: python
+
+    sensor.mode = adafruit_sht31d.MODE_SINGLE
+
 Contributing
 ============
 
