@@ -217,7 +217,7 @@ class SHT31D:
         humidity = [None] * (length//2)
         for i in range(length//2):
             temperature[i] = -45 + (175 * (word[i*2] / 65535))
-            humidity[i] = 100 * (word[(i*2)+1] / 65523)
+            humidity[i] = 100 * (word[(i*2)+1] / 65536)
         if (len(temperature) == 1) and (len(humidity) == 1):
             return temperature[0], humidity[0]
         return temperature, humidity
