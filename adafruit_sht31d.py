@@ -73,14 +73,14 @@ _SHT31_NOSLEEP = const(0x303E)
 _SHT31_PERIODIC_FETCH = const(0xE000)
 _SHT31_PERIODIC_BREAK = const(0x3093)
 
-MODE_SINGLE = 'Single'
-MODE_PERIODIC = 'Periodic'
+MODE_SINGLE = "Single"
+MODE_PERIODIC = "Periodic"
 
 _SHT31_MODES = (MODE_SINGLE, MODE_PERIODIC)
 
-REP_HIGH = 'High'
-REP_MED = 'Medium'
-REP_LOW = 'Low'
+REP_HIGH = "High"
+REP_MED = "Medium"
+REP_LOW = "Low"
 
 _SHT31_REP = (REP_HIGH, REP_MED, REP_LOW)
 
@@ -90,39 +90,47 @@ FREQUENCY_2 = 2
 FREQUENCY_4 = 4
 FREQUENCY_10 = 10
 
-_SHT31_FREQUENCIES = (FREQUENCY_0_5, FREQUENCY_1, FREQUENCY_2, FREQUENCY_4, FREQUENCY_10)
+_SHT31_FREQUENCIES = (
+    FREQUENCY_0_5,
+    FREQUENCY_1,
+    FREQUENCY_2,
+    FREQUENCY_4,
+    FREQUENCY_10,
+)
 
-_SINGLE_COMMANDS = ((REP_LOW, const(False), const(0x2416)),
-                    (REP_MED, const(False), const(0x240B)),
-                    (REP_HIGH, const(False), const(0x2400)),
-                    (REP_LOW, const(True), const(0x2C10)),
-                    (REP_MED, const(True), const(0x2C0D)),
-                    (REP_HIGH, const(True), const(0x2C06)))
+_SINGLE_COMMANDS = (
+    (REP_LOW, const(False), const(0x2416)),
+    (REP_MED, const(False), const(0x240B)),
+    (REP_HIGH, const(False), const(0x2400)),
+    (REP_LOW, const(True), const(0x2C10)),
+    (REP_MED, const(True), const(0x2C0D)),
+    (REP_HIGH, const(True), const(0x2C06)),
+)
 
-_PERIODIC_COMMANDS = ((True, None, const(0x2B32)),
-                      (REP_LOW, FREQUENCY_0_5, const(0x202F)),
-                      (REP_MED, FREQUENCY_0_5, const(0x2024)),
-                      (REP_HIGH, FREQUENCY_0_5, const(0x2032)),
-                      (REP_LOW, FREQUENCY_1, const(0x212D)),
-                      (REP_MED, FREQUENCY_1, const(0x2126)),
-                      (REP_HIGH, FREQUENCY_1, const(0x2130)),
-                      (REP_LOW, FREQUENCY_2, const(0x222B)),
-                      (REP_MED, FREQUENCY_2, const(0x2220)),
-                      (REP_HIGH, FREQUENCY_2, const(0x2236)),
-                      (REP_LOW, FREQUENCY_4, const(0x2329)),
-                      (REP_MED, FREQUENCY_4, const(0x2322)),
-                      (REP_HIGH, FREQUENCY_4, const(0x2334)),
-                      (REP_LOW, FREQUENCY_10, const(0x272A)),
-                      (REP_MED, FREQUENCY_10, const(0x2721)),
-                      (REP_HIGH, FREQUENCY_10, const(0x2737)))
+_PERIODIC_COMMANDS = (
+    (True, None, const(0x2B32)),
+    (REP_LOW, FREQUENCY_0_5, const(0x202F)),
+    (REP_MED, FREQUENCY_0_5, const(0x2024)),
+    (REP_HIGH, FREQUENCY_0_5, const(0x2032)),
+    (REP_LOW, FREQUENCY_1, const(0x212D)),
+    (REP_MED, FREQUENCY_1, const(0x2126)),
+    (REP_HIGH, FREQUENCY_1, const(0x2130)),
+    (REP_LOW, FREQUENCY_2, const(0x222B)),
+    (REP_MED, FREQUENCY_2, const(0x2220)),
+    (REP_HIGH, FREQUENCY_2, const(0x2236)),
+    (REP_LOW, FREQUENCY_4, const(0x2329)),
+    (REP_MED, FREQUENCY_4, const(0x2322)),
+    (REP_HIGH, FREQUENCY_4, const(0x2334)),
+    (REP_LOW, FREQUENCY_10, const(0x272A)),
+    (REP_MED, FREQUENCY_10, const(0x2721)),
+    (REP_HIGH, FREQUENCY_10, const(0x2737)),
+)
 
-_DELAY = ((REP_LOW, .0045),
-          (REP_MED, .0065),
-          (REP_HIGH, .0155))
+_DELAY = ((REP_LOW, 0.0045), (REP_MED, 0.0065), (REP_HIGH, 0.0155))
 
 
 def _crc(data):
-    crc = 0xff
+    crc = 0xFF
     for byte in data:
         crc ^= byte
         for _ in range(8):
@@ -133,18 +141,21 @@ def _crc(data):
                 crc <<= 1
     return crc
 
+
 def _unpack(data):
     length = len(data)
-    crc = [None] * (length//3)
-    word = [None] * (length//3)
-    for i in range(length//6):
-        word[i*2], crc[i*2], word[(i*2)+1], crc[(i*2)+1] = struct.unpack('>HBHB', data[i*6:(i*6)+6])
-        if crc[i*2] == _crc(data[i*6:(i*6)+2]):
-            length = (i+1)*6
-    for i in range(length//3):
-        if crc[i] != _crc(data[i*3:(i*3)+2]):
+    crc = [None] * (length // 3)
+    word = [None] * (length // 3)
+    for i in range(length // 6):
+        word[i * 2], crc[i * 2], word[(i * 2) + 1], crc[(i * 2) + 1] = struct.unpack(
+            ">HBHB", data[i * 6 : (i * 6) + 6]
+        )
+        if crc[i * 2] == _crc(data[i * 6 : (i * 6) + 2]):
+            length = (i + 1) * 6
+    for i in range(length // 3):
+        if crc[i] != _crc(data[i * 3 : (i * 3) + 2]):
             raise RuntimeError("CRC mismatch")
-    return word[:length//3]
+    return word[: length // 3]
 
 
 class SHT31D:
@@ -154,9 +165,10 @@ class SHT31D:
     :param i2c_bus: The `busio.I2C` object to use. This is the only required parameter.
     :param int address: (optional) The I2C address of the device.
     """
+
     def __init__(self, i2c_bus, address=_SHT31_DEFAULT_ADDRESS):
         if address not in _SHT31_ADDRESSES:
-            raise ValueError('Invalid address: 0x%x' % (address))
+            raise ValueError("Invalid address: 0x%x" % (address))
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._mode = MODE_SINGLE
         self._repeatability = REP_HIGH
@@ -170,7 +182,7 @@ class SHT31D:
 
     def _command(self, command):
         with self.i2c_device as i2c:
-            i2c.write(struct.pack('>H', command))
+            i2c.write(struct.pack(">H", command))
 
     def _reset(self):
         """
@@ -179,51 +191,58 @@ class SHT31D:
         device will not respond to a soft reset when in 'Periodic' mode.
         """
         self._command(_SHT31_PERIODIC_BREAK)
-        time.sleep(.001)
+        time.sleep(0.001)
         self._command(_SHT31_SOFTRESET)
-        time.sleep(.0015)
+        time.sleep(0.0015)
 
     def _periodic(self):
         for command in _PERIODIC_COMMANDS:
-            if self.art == command[0] or \
-            (self.repeatability == command[0] and self.frequency == command[1]):
+            if self.art == command[0] or (
+                self.repeatability == command[0] and self.frequency == command[1]
+            ):
                 self._command(command[2])
-                time.sleep(.001)
+                time.sleep(0.001)
                 self._last_read = 0
 
     def _data(self):
         if self.mode == MODE_PERIODIC:
             data = bytearray(48)
-            data[0] = 0xff
+            data[0] = 0xFF
             self._command(_SHT31_PERIODIC_FETCH)
-            time.sleep(.001)
+            time.sleep(0.001)
         elif self.mode == MODE_SINGLE:
             data = bytearray(6)
-            data[0] = 0xff
+            data[0] = 0xFF
             for command in _SINGLE_COMMANDS:
-                if self.repeatability == command[0] and self.clock_stretching == command[1]:
+                if (
+                    self.repeatability == command[0]
+                    and self.clock_stretching == command[1]
+                ):
                     self._command(command[2])
             if not self.clock_stretching:
                 for delay in _DELAY:
                     if self.repeatability == delay[0]:
                         time.sleep(delay[1])
             else:
-                time.sleep(.001)
+                time.sleep(0.001)
         with self.i2c_device as i2c:
             i2c.readinto(data)
         word = _unpack(data)
         length = len(word)
-        temperature = [None] * (length//2)
-        humidity = [None] * (length//2)
-        for i in range(length//2):
-            temperature[i] = -45 + (175 * (word[i*2] / 65535))
-            humidity[i] = 100 * (word[(i*2)+1] / 65535)
+        temperature = [None] * (length // 2)
+        humidity = [None] * (length // 2)
+        for i in range(length // 2):
+            temperature[i] = -45 + (175 * (word[i * 2] / 65535))
+            humidity[i] = 100 * (word[(i * 2) + 1] / 65535)
         if (len(temperature) == 1) and (len(humidity) == 1):
             return temperature[0], humidity[0]
         return temperature, humidity
 
     def _read(self):
-        if self.mode == MODE_PERIODIC and time.time() > self._last_read+1/self.frequency:
+        if (
+            self.mode == MODE_PERIODIC
+            and time.time() > self._last_read + 1 / self.frequency
+        ):
             self._cached_temperature, self._cached_humidity = self._data()
             self._last_read = time.time()
         elif self.mode == MODE_SINGLE:
@@ -245,7 +264,7 @@ class SHT31D:
             raise ValueError("Mode '%s' not supported" % (value))
         if self._mode == MODE_PERIODIC and value != MODE_PERIODIC:
             self._command(_SHT31_PERIODIC_BREAK)
-            time.sleep(.001)
+            time.sleep(0.001)
         if value == MODE_PERIODIC and self._mode != MODE_PERIODIC:
             self._periodic()
         self._mode = value
@@ -312,7 +331,9 @@ class SHT31D:
         if self.art:
             raise RuntimeError("Frequency locked to '4 Hz' when ART enabled")
         if not value in _SHT31_FREQUENCIES:
-            raise ValueError("Data acquisition frequency '%s Hz' not supported" % (value))
+            raise ValueError(
+                "Data acquisition frequency '%s Hz' not supported" % (value)
+            )
         if self.mode == MODE_PERIODIC and not self._frequency == value:
             self._frequency = value
             self._periodic()
@@ -354,17 +375,17 @@ class SHT31D:
     def heater(self, value=False):
         if value:
             self._command(_SHT31_HEATER_ENABLE)
-            time.sleep(.001)
+            time.sleep(0.001)
         else:
             self._command(_SHT31_HEATER_DISABLE)
-            time.sleep(.001)
+            time.sleep(0.001)
 
     @property
     def status(self):
         """Device status."""
         data = bytearray(2)
         self._command(_SHT31_READSTATUS)
-        time.sleep(.001)
+        time.sleep(0.001)
         with self.i2c_device as i2c:
             i2c.readinto(data)
         status = data[0] << 8 | data[1]
@@ -374,9 +395,9 @@ class SHT31D:
     def serial_number(self):
         """Device serial number."""
         data = bytearray(6)
-        data[0] = 0xff
+        data[0] = 0xFF
         self._command(_SHT31_READSERIALNBR)
-        time.sleep(.001)
+        time.sleep(0.001)
         with self.i2c_device as i2c:
             i2c.readinto(data)
         word = _unpack(data)
