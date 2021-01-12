@@ -52,7 +52,7 @@ To install in a virtual environment in your current project:
     python3 -m venv .env
     source .env/bin/activate
     pip3 install adafruit-circuitpython-sht31d
-    
+
 Usage Example
 =============
 You must import the library to use it:
