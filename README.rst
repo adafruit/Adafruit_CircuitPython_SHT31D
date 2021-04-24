@@ -63,15 +63,13 @@ You must import the library to use it:
 
 This driver takes an instantiated and active I2C object (from the `busio` or
 the `bitbangio` library) as an argument to its constructor.  The way to create
-an I2C object depends on the board you are using. For boards with labeled SCL
-and SDA pins, you can:
+an I2C object depends on the board you are using.
 
 .. code:: python
 
-    from busio import I2C
-    from board import SCL, SDA
+    from board
 
-    i2c = I2C(SCL, SDA)
+    i2c = board.I2C()
 
 Once you have created the I2C interface object, you can use it to instantiate
 the sensor object:

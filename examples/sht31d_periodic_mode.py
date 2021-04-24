@@ -1,14 +1,12 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
-#!/usr/bin/python3
 import time
 import board
-import busio
 import adafruit_sht31d
 
-# Create library object using our Bus I2C port
-i2c = busio.I2C(board.SCL, board.SDA)
+# Create sensor object, communicating over the board's default I2C bus
+i2c = board.I2C()
 sensor = adafruit_sht31d.SHT31D(i2c)
 
 print("\033[1mSensor\033[0m = SHT31-D")

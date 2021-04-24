@@ -16,13 +16,13 @@ Implementation Notes
 
 **Hardware:**
 
-* Adafruit `Sensiron SHT31-D Temperature & Humidity Sensor Breakout
-  <https://www.adafruit.com/product/2857>`_ (Product ID: 2857)
+* Adafruit SHT31-D temperature and humidity sensor Breakout: https://www.adafruit.com/product/2857
 
 **Software and Dependencies:**
 
-* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
-  https://github.com/adafruit/circuitpython/releases
+* Adafruit CircuitPython firmware for the supported boards:
+  https://circuitpython.org/downloads
+
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 
@@ -145,8 +145,35 @@ class SHT31D:
     """
     A driver for the SHT31-D temperature and humidity sensor.
 
-    :param i2c_bus: The `busio.I2C` object to use. This is the only required parameter.
-    :param int address: (optional) The I2C address of the device.
+    :param ~busio.I2C i2c_bus: The I2C bus the SHT31-D is connected to
+    :param int address: (optional) The I2C address of the device. Defaults to :const:`0x44`
+
+    **Quickstart: Importing and using the SHT31-D**
+
+        Here is an example of using the :class:`SHT31D` class.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import board
+            import adafruit_sht31d
+
+        Once this is done you can define your `board.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = board.I2C()   # uses board.SCL and board.SDA
+            sht = adafruit_sht31d.SHT31D(i2c)
+
+        Now you have access to the temperature and humidity the
+        the :attr:`temperature` and :attr:`relative_humidity` attributes
+
+
+        .. code-block:: python
+
+            temperature = sht.temperature
+            humidity = sht.relative_humidity
+
     """
 
     def __init__(self, i2c_bus, address=_SHT31_DEFAULT_ADDRESS):
@@ -326,7 +353,7 @@ class SHT31D:
     @property
     def temperature(self):
         """
-        The measured temperature in degrees celsius.
+        The measured temperature in degrees Celsius.
         'Single' mode reads and returns the current temperature as a float.
         'Periodic' mode returns the most recent readings available from the sensor's cache
         in a FILO list of eight floats. This list is backfilled with with the
