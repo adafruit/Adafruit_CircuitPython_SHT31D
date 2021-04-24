@@ -23,10 +23,12 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    Adafruit Sensirion SHT31-D Temperature & Humidity Sensor Breakout <https://learn.adafruit.com/adafruit-sht31-d-temperature-and-humidity-sensor-breakout>
+
 .. toctree::
     :caption: Related Products
 
-    Adafruit Sensiron SHT31-D Temperature & Humidity Sensor Breakout  <https://www.adafruit.com/product/2857>
+    Adafruit Sensirion SHT31-D Temperature & Humidity Sensor Breakout  <https://www.adafruit.com/product/2857>
 
 .. toctree::
     :caption: Other Links
