@@ -118,6 +118,11 @@ returned to single shot data acquisition mode:
 
     sensor.mode = adafruit_sht31d.MODE_SINGLE
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/sht31d/en/latest/>`_.
+
 Contributing
 ============
 
