@@ -27,11 +27,7 @@ Implementation Notes
 """
 
 # imports
-try:
-    import struct
-except ImportError:
-    import ustruct as struct
-
+import struct
 import time
 
 from micropython import const
