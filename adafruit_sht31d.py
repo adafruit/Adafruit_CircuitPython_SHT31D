@@ -115,10 +115,10 @@ def _crc(data):
         for _ in range(8):
             if crc & 0x80:
                 crc <<= 1
-                crc ^= 0x131
+                crc ^= 0x31
             else:
                 crc <<= 1
-    return crc
+    return crc & 0xFF
 
 
 def _unpack(data):
