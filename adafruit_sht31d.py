@@ -118,7 +118,7 @@ def _crc(data):
                 crc ^= 0x131
             else:
                 crc <<= 1
-    return crc
+    return crc & 0xFF
 
 
 def _unpack(data):
