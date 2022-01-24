@@ -3,7 +3,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-sht31d/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/sht31d/en/latest/
+    :target: https://docs.circuitpython.org/projects/sht31d/en/latest/
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
@@ -121,7 +121,7 @@ returned to single shot data acquisition mode:
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/sht31d/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/sht31d/en/latest/>`_.
 
 Contributing
 ============
