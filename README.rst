@@ -67,7 +67,7 @@ an I2C object depends on the board you are using.
 
 .. code:: python
 
-    from board
+    import board
 
     i2c = board.I2C()
 
