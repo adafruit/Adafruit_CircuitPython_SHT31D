@@ -30,7 +30,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/x-rst",
     # The project's main homepage.
-    url="https://github.com/adafruit/Adafruit_CircuitPython_SHT31-D",
+    url="https://github.com/adafruit/Adafruit_CircuitPython_SHT31D",
     # Author details
     author="Adafruit Industries",
     author_email="circuitpython@adafruit.com",
