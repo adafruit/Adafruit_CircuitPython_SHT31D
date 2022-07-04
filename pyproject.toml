@@ -13,6 +13,10 @@ requires = [
 name = "adafruit-circuitpython-sht31d"
 description = "CircuitPython library for SHT31-D temperature and humidity sensor."
 readme = "README.rst"
+authors = [
+    {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
+]
+urls = {Homepage = "https://github.com/adafruit/Adafruit_CircuitPython_SHT31D"} 
 keywords = [
     "adafruit",
     "sht31d",
