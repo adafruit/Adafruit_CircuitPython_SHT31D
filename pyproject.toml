@@ -12,6 +12,7 @@ requires = [
 [project]
 name = "adafruit-circuitpython-sht31d"
 description = "CircuitPython library for SHT31-D temperature and humidity sensor."
+version = "0.0.0-auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
@@ -37,12 +38,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
-dynamic = ["version", "dependencies"]
+dynamic = ["dependencies"]
 
 [tool.setuptools]
 py-modules = ["adafruit_sht31d"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-
-[tool.setuptools_scm]
