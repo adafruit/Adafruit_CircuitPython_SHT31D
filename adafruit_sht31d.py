@@ -352,7 +352,7 @@ class SHT31D:
             self._frequency = value
 
     @property
-    def temperature(self) -> Union(float, List[float]):
+    def temperature(self) -> Union[float, List[float]]:
         """
         The measured temperature in degrees Celsius.
         'Single' mode reads and returns the current temperature as a float.
@@ -365,7 +365,7 @@ class SHT31D:
         return temperature
 
     @property
-    def relative_humidity(self) -> Union(float, List[float]):
+    def relative_humidity(self) -> Union[float, List[float]]:
         """
         The measured relative humidity in percent.
         'Single' mode reads and returns the current humidity as a float.
