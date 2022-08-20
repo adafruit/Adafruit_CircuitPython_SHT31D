@@ -344,9 +344,7 @@ class SHT31D:
         if self.art:
             raise RuntimeError("Frequency locked to '4 Hz' when ART enabled")
         if not value in _SHT31_FREQUENCIES:
-            raise ValueError(
-                "Data acquisition frequency '{value} Hz' not supported"
-            )
+            raise ValueError("Data acquisition frequency '{value} Hz' not supported")
         if self.mode == MODE_PERIODIC and not self._frequency == value:
             self._frequency = value
             self._periodic()
