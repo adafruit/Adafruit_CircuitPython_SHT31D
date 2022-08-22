@@ -35,6 +35,8 @@ from adafruit_bus_device.i2c_device import I2CDevice
 
 try:
     from typing import List, Tuple, Union
+    from typing_extensions import Literal
+    from circuitpython_typing import ReadableBuffer
     from busio import I2C
 except ImportError:
     pass
@@ -128,7 +130,7 @@ def _crc(data) -> int:
     return crc & 0xFF
 
 
-def _unpack(data) -> float:
+def _unpack(data: ReadableBuffer) -> List[int]:
     length = len(data)
     crc = [None] * (length // 3)
     word = [None] * (length // 3)
@@ -217,7 +219,7 @@ class SHT31D:
                 time.sleep(0.001)
                 self._last_read = 0
 
-    def _data(self) -> Tuple[float, float]:
+    def _data(self) -> Union[Tuple[float, float], Tuple[List[float], List[float]]]:
         if self.mode == MODE_PERIODIC:
             data = bytearray(48)
             data[0] = 0xFF
@@ -251,7 +253,7 @@ class SHT31D:
             return temperature[0], humidity[0]
         return temperature, humidity
 
-    def _read(self) -> Tuple[float, float]:
+    def _read(self) -> Union[Tuple[float, float], Tuple[List[float], List[float]]]:
         if (
             self.mode == MODE_PERIODIC
             and time.time() > self._last_read + 1 / self.frequency
@@ -263,7 +265,7 @@ class SHT31D:
         return self._cached_temperature, self._cached_humidity
 
     @property
-    def mode(self) -> str:
+    def mode(self) -> Literal["Single", "Periodic"]:
         """
         Operation mode
         Allowed values are the constants MODE_*
@@ -283,7 +285,7 @@ class SHT31D:
         self._mode = value
 
     @property
-    def repeatability(self) -> Tuple[str, bool, int]:
+    def repeatability(self) -> Literal["High", "Medium", "Low"]:
         """
         Repeatability
         Allowed values are the constants REP_*
