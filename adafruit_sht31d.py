@@ -274,7 +274,7 @@ class SHT31D:
         return self._mode
 
     @mode.setter
-    def mode(self, value: str):
+    def mode(self, value: Literal["Single", "Periodic"]) -> None:
         if not value in _SHT31_MODES:
             raise ValueError(f"Mode '{value}' not supported")
         if self._mode == MODE_PERIODIC and value != MODE_PERIODIC:
@@ -293,7 +293,7 @@ class SHT31D:
         return self._repeatability
 
     @repeatability.setter
-    def repeatability(self, value: Tuple[str, bool, int]) -> None:
+    def repeatability(self, value: Literal["High", "Medium", "Low"]) -> None:
         if not value in _SHT31_REP:
             raise ValueError("Repeatability '{value}' not supported")
         if self.mode == MODE_PERIODIC and not self._repeatability == value:
