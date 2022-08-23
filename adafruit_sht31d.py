@@ -33,6 +33,15 @@ import time
 from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
 
+try:
+    from typing import List, Tuple, Union
+    from typing_extensions import Literal
+    from circuitpython_typing import ReadableBuffer
+    from busio import I2C
+except ImportError:
+    pass
+
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_SHT31D.git"
 
@@ -108,7 +117,7 @@ _PERIODIC_COMMANDS = (
 _DELAY = ((REP_LOW, 0.0045), (REP_MED, 0.0065), (REP_HIGH, 0.0155))
 
 
-def _crc(data):
+def _crc(data) -> int:
     crc = 0xFF
     for byte in data:
         crc ^= byte
@@ -121,7 +130,7 @@ def _crc(data):
     return crc & 0xFF
 
 
-def _unpack(data):
+def _unpack(data: ReadableBuffer) -> List[int]:
     length = len(data)
     crc = [None] * (length // 3)
     word = [None] * (length // 3)
@@ -172,9 +181,9 @@ class SHT31D:
 
     """
 
-    def __init__(self, i2c_bus, address=_SHT31_DEFAULT_ADDRESS):
+    def __init__(self, i2c_bus: I2C, address: int = _SHT31_DEFAULT_ADDRESS) -> None:
         if address not in _SHT31_ADDRESSES:
-            raise ValueError("Invalid address: 0x%x" % (address))
+            raise ValueError(f"Invalid address: {hex(address)}")
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._mode = MODE_SINGLE
         self._repeatability = REP_HIGH
@@ -186,11 +195,11 @@ class SHT31D:
         self._cached_humidity = None
         self._reset()
 
-    def _command(self, command):
+    def _command(self, command: int) -> None:
         with self.i2c_device as i2c:
             i2c.write(struct.pack(">H", command))
 
-    def _reset(self):
+    def _reset(self) -> None:
         """
         Soft reset the device
         The reset command is preceded by a break command as the
@@ -201,7 +210,7 @@ class SHT31D:
         self._command(_SHT31_SOFTRESET)
         time.sleep(0.0015)
 
-    def _periodic(self):
+    def _periodic(self) -> None:
         for command in _PERIODIC_COMMANDS:
             if self.art == command[0] or (
                 self.repeatability == command[0] and self.frequency == command[1]
@@ -210,7 +219,7 @@ class SHT31D:
                 time.sleep(0.001)
                 self._last_read = 0
 
-    def _data(self):
+    def _data(self) -> Union[Tuple[float, float], Tuple[List[float], List[float]]]:
         if self.mode == MODE_PERIODIC:
             data = bytearray(48)
             data[0] = 0xFF
@@ -244,7 +253,7 @@ class SHT31D:
             return temperature[0], humidity[0]
         return temperature, humidity
 
-    def _read(self):
+    def _read(self) -> Union[Tuple[float, float], Tuple[List[float], List[float]]]:
         if (
             self.mode == MODE_PERIODIC
             and time.time() > self._last_read + 1 / self.frequency
@@ -256,7 +265,7 @@ class SHT31D:
         return self._cached_temperature, self._cached_humidity
 
     @property
-    def mode(self):
+    def mode(self) -> Literal["Single", "Periodic"]:
         """
         Operation mode
         Allowed values are the constants MODE_*
@@ -265,9 +274,9 @@ class SHT31D:
         return self._mode
 
     @mode.setter
-    def mode(self, value):
+    def mode(self, value: Literal["Single", "Periodic"]) -> None:
         if not value in _SHT31_MODES:
-            raise ValueError("Mode '%s' not supported" % (value))
+            raise ValueError(f"Mode '{value}' not supported")
         if self._mode == MODE_PERIODIC and value != MODE_PERIODIC:
             self._command(_SHT31_PERIODIC_BREAK)
             time.sleep(0.001)
@@ -276,7 +285,7 @@ class SHT31D:
         self._mode = value
 
     @property
-    def repeatability(self):
+    def repeatability(self) -> Literal["High", "Medium", "Low"]:
         """
         Repeatability
         Allowed values are the constants REP_*
@@ -284,9 +293,9 @@ class SHT31D:
         return self._repeatability
 
     @repeatability.setter
-    def repeatability(self, value):
+    def repeatability(self, value: Literal["High", "Medium", "Low"]) -> None:
         if not value in _SHT31_REP:
-            raise ValueError("Repeatability '%s' not supported" % (value))
+            raise ValueError("Repeatability '{value}' not supported")
         if self.mode == MODE_PERIODIC and not self._repeatability == value:
             self._repeatability = value
             self._periodic()
@@ -294,7 +303,7 @@ class SHT31D:
             self._repeatability = value
 
     @property
-    def clock_stretching(self):
+    def clock_stretching(self) -> bool:
         """
         Control clock stretching.
         This feature only affects 'Single' mode.
@@ -302,11 +311,11 @@ class SHT31D:
         return self._clock_stretching
 
     @clock_stretching.setter
-    def clock_stretching(self, value):
+    def clock_stretching(self, value: bool) -> None:
         self._clock_stretching = bool(value)
 
     @property
-    def art(self):
+    def art(self) -> bool:
         """
         Control accelerated response time
         This feature only affects 'Periodic' mode.
@@ -314,7 +323,7 @@ class SHT31D:
         return self._art
 
     @art.setter
-    def art(self, value):
+    def art(self, value: bool) -> None:
         if value:
             self.frequency = FREQUENCY_4
         if self.mode == MODE_PERIODIC and not self._art == value:
@@ -324,7 +333,7 @@ class SHT31D:
             self._art = bool(value)
 
     @property
-    def frequency(self):
+    def frequency(self) -> float:
         """
         Periodic data acquisition frequency
         Allowed values are the constants FREQUENCY_*
@@ -333,13 +342,11 @@ class SHT31D:
         return self._frequency
 
     @frequency.setter
-    def frequency(self, value):
+    def frequency(self, value: float) -> None:
         if self.art:
             raise RuntimeError("Frequency locked to '4 Hz' when ART enabled")
         if not value in _SHT31_FREQUENCIES:
-            raise ValueError(
-                "Data acquisition frequency '%s Hz' not supported" % (value)
-            )
+            raise ValueError("Data acquisition frequency '{value} Hz' not supported")
         if self.mode == MODE_PERIODIC and not self._frequency == value:
             self._frequency = value
             self._periodic()
@@ -347,7 +354,7 @@ class SHT31D:
             self._frequency = value
 
     @property
-    def temperature(self):
+    def temperature(self) -> Union[float, List[float]]:
         """
         The measured temperature in degrees Celsius.
         'Single' mode reads and returns the current temperature as a float.
@@ -360,7 +367,7 @@ class SHT31D:
         return temperature
 
     @property
-    def relative_humidity(self):
+    def relative_humidity(self) -> Union[float, List[float]]:
         """
         The measured relative humidity in percent.
         'Single' mode reads and returns the current humidity as a float.
@@ -373,12 +380,12 @@ class SHT31D:
         return humidity
 
     @property
-    def heater(self):
+    def heater(self) -> bool:
         """Control device's internal heater."""
         return (self.status & 0x2000) != 0
 
     @heater.setter
-    def heater(self, value=False):
+    def heater(self, value: bool = False) -> None:
         if value:
             self._command(_SHT31_HEATER_ENABLE)
             time.sleep(0.001)
@@ -387,7 +394,7 @@ class SHT31D:
             time.sleep(0.001)
 
     @property
-    def status(self):
+    def status(self) -> int:
         """Device status."""
         data = bytearray(2)
         self._command(_SHT31_READSTATUS)
@@ -398,7 +405,7 @@ class SHT31D:
         return status
 
     @property
-    def serial_number(self):
+    def serial_number(self) -> int:
         """Device serial number."""
         data = bytearray(6)
         data[0] = 0xFF
