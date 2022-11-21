@@ -6,7 +6,8 @@ import board
 import adafruit_sht31d
 
 # Create sensor object, communicating over the board's default I2C bus
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 sensor = adafruit_sht31d.SHT31D(i2c)
 
 loopcount = 0
