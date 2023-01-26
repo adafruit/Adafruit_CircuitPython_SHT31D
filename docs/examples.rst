@@ -21,6 +21,6 @@ Periodic Mode
 
 Example in how to use the sensor in periodic mode
 
-.. literalinclude:: ../examples/sht31d_simpletest.py
-    :caption: examples/sht31d_simpletest.py
+.. literalinclude:: ../examples/sht31d_periodic_mode.py
+    :caption: examples/sht31d_periodic_mode.py
     :linenos:
