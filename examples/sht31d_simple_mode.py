@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 import board
+
 import adafruit_sht31d
 
 # Create sensor object, communicating over the board's default I2C bus

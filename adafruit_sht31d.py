@@ -30,14 +30,15 @@ Implementation Notes
 import struct
 import time
 
-from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
+from micropython import const
 
 try:
     from typing import List, Tuple, Union
-    from typing_extensions import Literal
-    from circuitpython_typing import ReadableBuffer
+
     from busio import I2C
+    from circuitpython_typing import ReadableBuffer
+    from typing_extensions import Literal
 except ImportError:
     pass
 
@@ -229,10 +230,7 @@ class SHT31D:
             data = bytearray(6)
             data[0] = 0xFF
             for command in _SINGLE_COMMANDS:
-                if (
-                    self.repeatability == command[0]
-                    and self.clock_stretching == command[1]
-                ):
+                if self.repeatability == command[0] and self.clock_stretching == command[1]:
                     self._command(command[2])
             if not self.clock_stretching:
                 for delay in _DELAY:
@@ -254,10 +252,7 @@ class SHT31D:
         return temperature, humidity
 
     def _read(self) -> Union[Tuple[float, float], Tuple[List[float], List[float]]]:
-        if (
-            self.mode == MODE_PERIODIC
-            and time.time() > self._last_read + 1 / self.frequency
-        ):
+        if self.mode == MODE_PERIODIC and time.time() > self._last_read + 1 / self.frequency:
             self._cached_temperature, self._cached_humidity = self._data()
             self._last_read = time.time()
         elif self.mode == MODE_SINGLE:
