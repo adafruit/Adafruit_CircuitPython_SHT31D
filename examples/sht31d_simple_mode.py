@@ -26,5 +26,5 @@ for i in range(3):
         print("\n\033[1m\033[36mHigh Repeatability:\033[0m")
         print("\033[1m\033[95mClock Stretching:\033[0m \033[92mEnabled\033[0m\n")
     for itr in range(3):
-        print("\033[1mTemperature:\033[0m %0.3f ºC" % sensor.temperature)
-        print("\033[1mHumidity:\033[0m %0.2f %%" % sensor.relative_humidity, "\n")
+        print(f"\033[1mTemperature:\033[0m {sensor.temperature:0.3f} ºC")
+        print(f"\033[1mHumidity:\033[0m {sensor.relative_humidity:0.2f} %", "\n")

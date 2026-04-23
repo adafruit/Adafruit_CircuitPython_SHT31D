@@ -14,8 +14,8 @@ sensor = adafruit_sht31d.SHT31D(i2c)
 
 loopcount = 0
 while True:
-    print("\nTemperature: %0.1f C" % sensor.temperature)
-    print("Humidity: %0.1f %%" % sensor.relative_humidity)
+    print(f"\nTemperature: {sensor.temperature:0.1f} C")
+    print(f"Humidity: {sensor.relative_humidity:0.1f} %")
     loopcount += 1
     time.sleep(2)
     # every 10 passes turn on the heater for 1 second
